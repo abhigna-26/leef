@@ -68,24 +68,31 @@
     .img-square { aspect-ratio: 1 / 1; object-fit: cover; width: 100%; height: 100%; }
 
     /* Floating Talentronaut icon */
-    .talent-icon {
-      position: fixed;
-      right: 20px;
-      bottom: 28vh; /* in between */
-      z-index: 60;
-      width: 64px;
-      height: 64px;
-      border-radius: 9999px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-      display: grid;
-      place-items: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-      cursor: pointer;
-      transition: transform .18s ease;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-    .talent-icon:hover { transform: translateY(-6px) scale(1.03); }
-    .talent-icon img { width: 40px; height: 40px; border-radius: 8px; }
+    /* Floating Talentronaut icon */
+.talent-icon {
+  position: fixed;
+  right: 24px;
+  bottom: 24px; /* fixed bottom-right corner */
+  z-index: 60;
+  width: 64px;
+  height: 64px;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  display: grid;
+  place-items: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  cursor: pointer;
+  transition: transform .18s ease;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.talent-icon:hover {
+  transform: translateY(-6px) scale(1.03);
+}
+.talent-icon img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
 
     /* Header blur */
     .backdrop-blur { backdrop-filter: blur(6px); background: rgba(0,0,0,0.35); }
