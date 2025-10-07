@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Leef — Dashing Black & White Streetwear</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- AOS for scroll animations -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <!-- Icons -->
+  <script src="https://unpkg.com/feather-icons"></script>
+
+  <!-- Google Fonts (Elegant) -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0b0b0b;
+      --muted:#e6e6e6;
+      --accent:#ffffff;
+      --glass: rgba(255,255,255,0.04);
+      --gloss: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body{
+      background: var(--bg);
+      color: var(--muted);
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    .font-display { font-family: 'Playfair Display', serif; }
+
+    /* subtle shimmer for CTAs */
+    .shiny {
+      position: relative;
+      overflow: hidden;
+    }
+    .shiny::after{
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -30%;
+      width: 80%;
+      height: 200%;
+      background: linear-gradient(120deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.06) 100%);
+      transform: rotate(25deg);
+      transition: transform .9s ease;
+    }
+    .shiny:hover::after{ transform: translateX(120%) rotate(25deg); }
+
+    /* Card hover glow */
+    .card-glow { transition: transform .25s ease, box-shadow .25s ease; }
+    .card-glow:hover { transform: translateY(-6px); box-shadow: 0 10px 30px rgba(255,255,255,0.03); }
+
+    /* Tiny glass */
+    .glass { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.03); backdrop-filter: blur(6px); }
+
+    /* Product image ratio */
+    .img-square { aspect-ratio: 1 / 1; object-fit: cover; width: 100%; height: 100%; }
+
+    /* Floating Talentronaut icon */
+    .talent-icon {
+      position: fixed;
+      right: 20px;
+      bottom: 28vh; /* in between */
+      z-index: 60;
+      width: 64px;
+      height: 64px;
+      border-radius: 9999px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      display: grid;
+      place-items: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      cursor: pointer;
+      transition: transform .18s ease;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .talent-icon:hover { transform: translateY(-6px) scale(1.03); }
+    .talent-icon img { width: 40px; height: 40px; border-radius: 8px; }
+
+    /* Header blur */
+    .backdrop-blur { backdrop-filter: blur(6px); background: rgba(0,0,0,0.35); }
+
+    /* tiny underline anim */
+    .link-underline { position: relative; }
+    .link-underline::after{ content:''; position:absolute; left:0; bottom:-6px; height:2px; width:0; background:linear-gradient(90deg,#fff,#ddd); transition: width .25s ease; border-radius:2px; }
+    .link-underline:hover::after{ width:100%; }
+
+    /* Modal */
+    .modal-backdrop { background: rgba(0,0,0,0.6); }
+
+    /* Decorative separator */
+    .sep { height: 1px; background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.06), rgba(255,255,255,0.03)); }
+
+    /* Small helpers for contrast */
+    .text-dim { color: rgba(255,255,255,0.7); }
+
+    /* shiny text for headings */
+    .shimmer-text {
+      background: linear-gradient(90deg,#fff,#e8e8e8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Talentronaut icon -->
+  <a class="talent-icon" href="https://www.talentronaut.in/" target="_blank" rel="noopener" aria-label="Talentronaut">
+    <!-- small logo image; replace with your preferred icon if desired -->
+    <img src="logo.jpg" alt="T" />
+  </a>
+
+  <!-- Header -->
+  <header class="fixed w-full z-50 top-0 left-0 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <a href="#home" class="flex items-center gap-3">
+          <!-- logo placeholder - replace assets/logo.png with your attached image -->
+          <img src="mainlogo.jpeg" alt="Leef Logo" class="w-12 h-12 object-contain rounded-md bg-white/5 p-1" />
+          <div>
+            <div class="font-display font-semibold text-xl text-white">Leef</div>
+            <div class="text-xs text-dim">Streetwear • Hoodies • Tees</div>
+          </div>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-8 text-sm">
+          <a href="#home" class="link-underline">Home</a>
+          <a href="#products" class="link-underline">Products</a>
+          <a href="#lookbook" class="link-underline">Lookbook</a>
+          <a href="#story" class="link-underline">Our Story</a>
+          <a href="#contact" class="link-underline">Contact</a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <button id="cartBtn" class="p-2 rounded-md glass" aria-label="Cart">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg>
+          </button>
+          <button id="menuToggle" class="md:hidden p-2 rounded-md glass">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- mobile nav -->
+    <div id="mobileNav" class="hidden md:hidden px-4 pb-4">
+      <div class="flex flex-col gap-3">
+        <a href="#home" class="py-2">Home</a>
+        <a href="#products" class="py-2">Products</a>
+        <a href="#lookbook" class="py-2">Lookbook</a>
+        <a href="#story" class="py-2">Our Story</a>
+        <a href="#contact" class="py-2">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="pt-24">
+
+    <!-- HERO -->
+    <section id="home" class="relative overflow-hidden min-h-[80vh] md:min-h-[95vh] flex items-center">
+      <!-- background image -->
+      <div class="absolute inset-0 -z-10">
+        <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=2000&auto=format&fit=crop&ixlib=rb-4.0.3&s=9f9c5c6f3b4d2a3f5c6e7d8b9a1b2c3d" alt="hero" class="w-full h-full object-cover brightness-50" />
+        <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.6));"></div>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <!-- left -->
+          <div class="py-12 md:py-20" data-aos="fade-right" data-aos-duration="900">
+            <div class="glass inline-block px-3 py-2 rounded-md text-xs text-dim mb-6">LIMITED DROP — Influencer Collab</div>
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-display leading-tight text-white mb-6 shimmer-text">
+              Leef — Dashing Black &amp; White Essentials
+            </h1>
+            <p class="text-lg md:text-xl text-dim max-w-xl mb-6">
+              Premium oversized tees and luxurious hoodies — minimal monochrome, maximum impact. Crafted for comfort, styled for statement.
+            </p>
+
+            <div class="flex items-center gap-4">
+              <a href="#products" class="shiny inline-block px-6 py-3 rounded-md bg-white text-black font-semibold transition shadow-md">Shop Collection</a>
+              <a href="#lookbook" class="px-5 py-3 rounded-md border border-white/10 text-white/90 hover:bg-white/5 transition">See Lookbook</a>
+            </div>
+
+            <div class="mt-8 flex items-center gap-6 text-dim">
+              <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white/80" viewBox="0 0 20 20" fill="currentColor"><path d="M3 3h14v2H3V3zM3 7h14v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
+                <span class="text-sm">Free shipping in India over ₹1499</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white/80" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3.5A1.5 1.5 0 013.5 2h13A1.5 1.5 0 0118 3.5v13a1.5 1.5 0 01-1.5 1.5H3.5A1.5 1.5 0 012 16.5v-13zM6 6h8v2H6V6z"/></svg>
+                <span class="text-sm">Secure checkout</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- right: featured product -->
+          <div class="py-12 md:py-20 flex justify-center" data-aos="zoom-in" data-aos-duration="900">
+            <div class="max-w-md w-full card-glow glass rounded-2xl overflow-hidden p-4">
+              <div class="relative">
+                <img src="main.webp" alt="Featured hoodie" class="img-square rounded-xl object-cover shadow-lg" />
+                <div class="absolute left-4 bottom-4 p-3 bg-black/60 rounded-md text-white text-sm">New — Oversized Hoodie</div>
+              </div>
+              <div class="mt-4">
+                <h3 class="text-xl font-semibold text-white">Leef Oversized Hoodie</h3>
+                <p class="text-dim mt-2">Roomy fit, plush fabric, monochrome minimalism.</p>
+                <div class="mt-4 flex items-center justify-between">
+                  <div>
+                    <div class="text-dim text-sm">From</div>
+                    <div class="text-white font-semibold">₹2,199</div>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <button onclick="openQuickView('Hoodie')" class="px-4 py-2 rounded-md border border-white/10 text-white/90 hover:bg-white/5 transition">Quick view</button>
+                    <button onclick="addToCart('Leef Oversized Hoodie',2199)" class="px-4 py-2 rounded-md bg-white text-black font-semibold hover:scale-105 transition">Add</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section id="products" class="py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h2 class="text-3xl font-display font-semibold text-white" data-aos="fade-up">Collection</h2>
+            <p class="text-dim mt-1">Curated monochrome essentials — drop by drop.</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <button class="px-3 py-2 rounded-md border border-white/6 text-sm" onclick="filterProducts('all')">All</button>
+            <button class="px-3 py-2 rounded-md border border-white/6 text-sm" onclick="filterProducts('tees')">Tees</button>
+            <button class="px-3 py-2 rounded-md border border-white/6 text-sm" onclick="filterProducts('hoodies')">Hoodies</button>
+          </div>
+        </div>
+
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <!-- product card template repeated -->
+          <!-- 1 -->
+          <article class="bg-[#070707] rounded-2xl overflow-hidden p-0 card-glow" data-cat="tees" data-aos="fade-up">
+            <div class="w-full h-72 overflow-hidden">
+              <img src="oversizetee.jpg" alt="Black Tee" class="w-full h-full object-cover" />
+            </div>
+            <div class="p-4">
+              <h4 class="text-white font-semibold">Leef Oversized Tee</h4>
+              <p class="text-dim text-sm mt-2">Soft combed cotton, oversized fit.</p>
+              <div class="mt-4 flex items-center justify-between">
+                <div class="text-white font-semibold">₹899</div>
+                <div class="flex items-center gap-2">
+                  <button onclick="openQuickView('Leef Oversized Tee')" class="px-3 py-1 rounded-md border border-white/8 text-sm">View</button>
+                  <button onclick="addToCart('Leef Oversized Tee',899)" class="px-3 py-1 rounded-md bg-white text-black text-sm">Add</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 2 -->
+          <article class="bg-[#070707] rounded-2xl overflow-hidden p-0 card-glow" data-cat="hoodies" data-aos="fade-up" data-aos-delay="60">
+            <div class="w-full h-72 overflow-hidden">
+              <img src="main.webp" alt="Hoodie Black" class="w-full h-full object-cover" />
+            </div>
+            <div class="p-4">
+              <h4 class="text-white font-semibold">Leef Classic Hoodie</h4>
+              <p class="text-dim text-sm mt-2">Midweight fleece, tailored drop shoulder.</p>
+              <div class="mt-4 flex items-center justify-between">
+                <div class="text-white font-semibold">₹1,999</div>
+                <div class="flex items-center gap-2">
+                  <button onclick="openQuickView('Leef Classic Hoodie')" class="px-3 py-1 rounded-md border border-white/8 text-sm">View</button>
+                  <button onclick="addToCart('Leef Classic Hoodie',1999)" class="px-3 py-1 rounded-md bg-white text-black text-sm">Add</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 3 -->
+          <article class="bg-[#070707] rounded-2xl overflow-hidden p-0 card-glow" data-cat="tees" data-aos="fade-up" data-aos-delay="120">
+            <div class="w-full h-72 overflow-hidden">
+              <img src="tee.webp" alt="White Tee" class="w-full h-full object-cover" />
+            </div>
+            <div class="p-4">
+              <h4 class="text-white font-semibold">Leef Minimal Tee (White)</h4>
+              <p class="text-dim text-sm mt-2">Signature timeless cut.</p>
+              <div class="mt-4 flex items-center justify-between">
+                <div class="text-white font-semibold">₹899</div>
+                <div class="flex items-center gap-2">
+                  <button onclick="openQuickView('Leef Minimal Tee (White)')" class="px-3 py-1 rounded-md border border-white/8 text-sm">View</button>
+                  <button onclick="addToCart('Leef Minimal Tee (White)',899)" class="px-3 py-1 rounded-md bg-white text-black text-sm">Add</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 4 -->
+          <article class="bg-[#070707] rounded-2xl overflow-hidden p-0 card-glow" data-cat="hoodies" data-aos="fade-up" data-aos-delay="180">
+            <div class="w-full h-72 overflow-hidden">
+              <img src="classhood.jpg" alt="Hoodie Gray" class="w-full h-full object-cover" />
+            </div>
+            <div class="p-4">
+              <h4 class="text-white font-semibold">Essential Hoodie (Gray)</h4>
+              <p class="text-dim text-sm mt-2">Versatile layering piece.</p>
+              <div class="mt-4 flex items-center justify-between">
+                <div class="text-white font-semibold">₹1,999</div>
+                <div class="flex items-center gap-2">
+                  <button onclick="openQuickView('Essential Hoodie (Gray)')" class="px-3 py-1 rounded-md border border-white/8 text-sm">View</button>
+                  <button onclick="addToCart('Essential Hoodie (Gray)',1999)" class="px-3 py-1 rounded-md bg-white text-black text-sm">Add</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 5 (repeat few more to fill grid) -->
+          <article class="bg-[#070707] rounded-2xl overflow-hidden p-0 card-glow" data-cat="tees" data-aos="fade-up" data-aos-delay="240">
+            <div class="w-full h-72 overflow-hidden">
+              <img src="tee.webp" alt="Tee 5" class="w-full h-full object-cover" />
+            </div>
+            <div class="p-4">
+              <h4 class="text-white font-semibold">Leef Boxy Tee</h4>
+              <p class="text-dim text-sm mt-2">Relaxed silhouette.</p>
+              <div class="mt-4 flex items-center justify-between">
+                <div class="text-white font-semibold">₹999</div>
+                <div class="flex items-center gap-2">
+                  <button onclick="openQuickView('Leef Boxy Tee')" class="px-3 py-1 rounded-md border border-white/8 text-sm">View</button>
+                  <button onclick="addToCart('Leef Boxy Tee',999)" class="px-3 py-1 rounded-md bg-white text-black text-sm">Add</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 6 -->
+          <article class="bg-[#070707] rounded-2xl overflow-hidden p-0 card-glow" data-cat="tees" data-aos="fade-up" data-aos-delay="300">
+            <div class="w-full h-72 overflow-hidden">
+              <img src="oversizetee.jpg" alt="Tee 6" class="w-full h-full object-cover" />
+            </div>
+            <div class="p-4">
+              <h4 class="text-white font-semibold">Leef Longline Tee</h4>
+              <p class="text-dim text-sm mt-2">Modern longline fit.</p>
+              <div class="mt-4 flex items-center justify-between">
+                <div class="text-white font-semibold">₹949</div>
+                <div class="flex items-center gap-2">
+                  <button onclick="openQuickView('Leef Longline Tee')" class="px-3 py-1 rounded-md border border-white/8 text-sm">View</button>
+                  <button onclick="addToCart('Leef Longline Tee',949)" class="px-3 py-1 rounded-md bg-white text-black text-sm">Add</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 7 -->
+          <article class="bg-[#070707] rounded-2xl overflow-hidden p-0 card-glow" data-cat="hoodies" data-aos="fade-up" data-aos-delay="360">
+            <div class="w-full h-72 overflow-hidden">
+              <img src="classhood.jpg" alt="Hoodie 3" class="w-full h-full object-cover" />
+            </div>
+            <div class="p-4">
+              <h4 class="text-white font-semibold">Leef Heavyweight Hoodie</h4>
+              <p class="text-dim text-sm mt-2">Structure & warmth combined.</p>
+              <div class="mt-4 flex items-center justify-between">
+                <div class="text-white font-semibold">₹2,399</div>
+                <div class="flex items-center gap-2">
+                  <button onclick="openQuickView('Leef Heavyweight Hoodie')" class="px-3 py-1 rounded-md border border-white/8 text-sm">View</button>
+                  <button onclick="addToCart('Leef Heavyweight Hoodie',2399)" class="px-3 py-1 rounded-md bg-white text-black text-sm">Add</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- 8 -->
+          <article class="bg-[#070707] rounded-2xl overflow-hidden p-0 card-glow" data-cat="tees" data-aos="fade-up" data-aos-delay="420">
+            <div class="w-full h-72 overflow-hidden">
+              <img src="oversizetee.jpg" alt="Tee 8" class="w-full h-full object-cover" />
+            </div>
+            <div class="p-4">
+              <h4 class="text-white font-semibold">Leef Classic Tee</h4>
+              <p class="text-dim text-sm mt-2">Everyday essential.</p>
+              <div class="mt-4 flex items-center justify-between">
+                <div class="text-white font-semibold">₹799</div>
+                <div class="flex items-center gap-2">
+                  <button onclick="openQuickView('Leef Classic Tee')" class="px-3 py-1 rounded-md border border-white/8 text-sm">View</button>
+                  <button onclick="addToCart('Leef Classic Tee',799)" class="px-3 py-1 rounded-md bg-white text-black text-sm">Add</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- LOOKBOOK -->
+    <section id="lookbook" class="py-20 bg-[#070707]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-display font-semibold text-white mb-4" data-aos="fade-up">Lookbook</h2>
+        <p class="text-dim mb-8">Styled shots — how Leef is worn in the city and beyond.</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <figure class="rounded-xl overflow-hidden card-glow" data-aos="zoom-in">
+            <img src="model1.webp" alt="model1" class="w-full h-72 object-cover" />
+            <figcaption class="p-4 text-white text-sm">Oversized tee + structured jacket</figcaption>
+          </figure>
+
+          <figure class="rounded-xl overflow-hidden card-glow" data-aos="zoom-in" data-aos-delay="60">
+            <img src="model2.jpg" alt="model2" class="w-full h-72 object-cover" />
+            <figcaption class="p-4 text-white text-sm">Monochrome layering</figcaption>
+          </figure>
+
+          <figure class="rounded-xl overflow-hidden card-glow" data-aos="zoom-in" data-aos-delay="120">
+            <img src="model3.jpg" alt="model3" class="w-full h-72 object-cover" />
+            <figcaption class="p-4 text-white text-sm">Cozy hoodie moments</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- STORY / ABOUT -->
+    <section id="story" class="py-20">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+        <div data-aos="fade-right">
+          <h2 class="text-3xl font-display font-semibold text-white mb-4">Our Story</h2>
+          <p class="text-dim mb-4">Leef started from a love for minimalist design and honest product. We create pieces that transcend seasons — durable, comfortable, and elevated by careful detailing.</p>
+          <p class="text-dim mb-4">We believe in limited drops, careful collaborations, and making garments that age well. Every piece is thoughtfully sourced and responsibly produced.</p>
+
+          <div class="mt-6 flex gap-4">
+            <a href="#products" class="px-5 py-3 rounded-md bg-white text-black font-semibold shiny">Explore Drops</a>
+            <a href="#contact" class="px-5 py-3 rounded-md border border-white/10 text-white">Partner with us</a>
+          </div>
+        </div>
+
+        <div data-aos="fade-left">
+          <div class="rounded-2xl overflow-hidden">
+            <img src="studio.jpg" alt="studio" class="w-full h-96 object-cover rounded-xl" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="py-16 bg-[#070707]">
+      <div class="max-w-4xl mx-auto px-4">
+        <h3 class="text-2xl font-display text-white mb-6" data-aos="fade-up">FAQ</h3>
+        <div class="space-y-3">
+          <details class="p-4 bg-black/60 rounded-md" open data-aos="fade-up">
+            <summary class="font-semibold text-white cursor-pointer">What sizes are available?</summary>
+            <div class="mt-2 text-dim text-sm">We offer S, M, L, XL, and XXL in most pieces. Check each product page for specifics.</div>
+          </details>
+          <details class="p-4 bg-black/60 rounded-md" data-aos="fade-up" data-aos-delay="40">
+            <summary class="font-semibold text-white cursor-pointer">Do you ship internationally?</summary>
+            <div class="mt-2 text-dim text-sm">Currently shipping across India. International shipping will be added soon.</div>
+          </details>
+          <details class="p-4 bg-black/60 rounded-md" data-aos="fade-up" data-aos-delay="80">
+            <summary class="font-semibold text-white cursor-pointer">What is your returns policy?</summary>
+            <div class="mt-2 text-dim text-sm">Returns accepted within 7 days for unworn, unwashed items. Contact support for return labels.</div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="py-20">
+      <div class="max-w-4xl mx-auto px-4 text-center">
+        <h3 class="text-3xl font-display text-white mb-3" data-aos="fade-up">Get in Touch</h3>
+        <p class="text-dim mb-6">Questions about a product, collaboration, or wholesale? Drop us a message.</p>
+
+        <form id="contactForm" class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-[#0b0b0b] p-6 rounded-xl" data-aos="fade-up" data-aos-delay="60">
+          <input type="text" name="name" placeholder="Full name" required class="p-3 rounded-md bg-black border border-white/6 text-white" />
+          <input type="email" name="email" placeholder="Email" required class="p-3 rounded-md bg-black border border-white/6 text-white" />
+          <input type="text" name="subject" placeholder="Subject" class="p-3 rounded-md bg-black border border-white/6 text-white sm:col-span-2" />
+          <textarea name="message" rows="4" placeholder="Message" class="p-3 rounded-md bg-black border border-white/6 text-white sm:col-span-2"></textarea>
+          <button type="submit" class="sm:col-span-2 px-6 py-3 rounded-md bg-white text-black font-semibold shiny">Send Message</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-black border-t border-white/6 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <div class="flex items-center gap-3 mb-3">
+            <img src="mainlogo.jpeg" alt="Leef" class="w-12 h-12 object-contain rounded-md bg-white/5 p-1" />
+            <div>
+              <div class="font-display text-white text-lg">Leef</div>
+              <div class="text-dim text-sm">Minimal monchrome streetwear</div>
+            </div>
+          </div>
+          <p class="text-dim text-sm">© <span id="year"></span> Leef. All rights reserved.</p>
+        </div>
+
+        <div class="text-sm text-dim">
+          <div class="font-semibold text-white mb-2">Quick Links</div>
+          <ul class="space-y-2">
+            <li><a href="#products" class="hover:text-white">Products</a></li>
+            <li><a href="#lookbook" class="hover:text-white">Lookbook</a></li>
+            <li><a href="#story" class="hover:text-white">Our Story</a></li>
+          </ul>
+        </div>
+
+        <div class="text-sm text-dim">
+          <div class="font-semibold text-white mb-2">Contact</div>
+          <div>Email: <a href="mailto:hello@leef.example" class="hover:text-white">hello@leef.example</a></div>
+          <div class="mt-2">Designed by <a href="https://www.talentronaut.in/" target="_blank" rel="noopener" class="underline text-white">Talentronaut Technologies</a></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- QUICK VIEW MODAL -->
+  <div id="quickViewModal" class="fixed inset-0 z-60 hidden items-center justify-center modal-backdrop p-4">
+    <div class="bg-[#080808] rounded-2xl max-w-3xl w-full overflow-hidden">
+      <div class="flex items-start justify-between p-4 border-b border-white/6">
+        <h4 id="qvTitle" class="text-lg font-semibold text-white">Product</h4>
+        <button id="closeQv" class="p-2 rounded-md text-white">✕</button>
+      </div>
+      <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <img id="qvImg" src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&s=abd7e6f2b0d3e8c6" alt="product" class="w-full h-96 object-cover rounded-md" />
+        </div>
+        <div>
+          <h5 id="qvName" class="text-2xl font-semibold text-white">Product title</h5>
+          <p id="qvDesc" class="text-dim mt-2">Short product description goes here — fabric, fit and style notes.</p>
+          <div class="mt-4 text-white font-semibold" id="qvPrice">₹999</div>
+
+          <div class="mt-6 space-y-3">
+            <label class="text-dim text-sm">Size</label>
+            <div class="flex gap-2">
+              <button class="px-3 py-2 border border-white/8 rounded-md">S</button>
+              <button class="px-3 py-2 border border-white/8 rounded-md">M</button>
+              <button class="px-3 py-2 border border-white/8 rounded-md">L</button>
+              <button class="px-3 py-2 border border-white/8 rounded-md">XL</button>
+            </div>
+
+            <div class="mt-4 flex items-center gap-3">
+              <button id="qvAdd" class="px-4 py-2 rounded-md bg-white text-black font-semibold">Add to cart</button>
+              <button id="qvBuy" class="px-4 py-2 rounded-md border border-white/8 text-white">Buy now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CART SIDEBAR (demo front-end) -->
+  <div id="cartSidebar" class="fixed right-0 top-0 h-full w-80 bg-[#060606] border-l border-white/6 transform translate-x-full z-70 transition-transform">
+    <div class="p-4 flex items-center justify-between border-b border-white/6">
+      <h4 class="text-white font-semibold">Your Cart</h4>
+      <button onclick="toggleCart()" class="text-white p-2">✕</button>
+    </div>
+    <div id="cartItems" class="p-4 space-y-4 overflow-y-auto h-[calc(100%-140px)] text-sm text-dim">
+      <div class="text-dim">No items yet.</div>
+    </div>
+    <div class="p-4 border-t border-white/6">
+      <div class="flex items-center justify-between mb-3 text-white">
+        <div>Subtotal</div>
+        <div id="cartTotal">₹0</div>
+      </div>
+      <button class="w-full px-4 py-3 rounded-md bg-white text-black font-semibold" onclick="checkout()">Checkout</button>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script>
+    // init AOS
+    AOS.init({ once: true, duration: 700 });
+
+    // header mobile toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileNav = document.getElementById('mobileNav');
+    menuToggle?.addEventListener('click', () => {
+      mobileNav.classList.toggle('hidden');
+    });
+
+    // cart sidebar
+    const cartSidebar = document.getElementById('cartSidebar');
+    let cart = [];
+
+    function toggleCart() {
+      if (!cartSidebar) return;
+      const isHidden = cartSidebar.classList.contains('translate-x-full');
+      if (isHidden) cartSidebar.classList.remove('translate-x-full'); else cartSidebar.classList.add('translate-x-full');
+    }
+
+    document.getElementById('cartBtn')?.addEventListener('click', toggleCart);
+
+    function addToCart(title, price){
+      cart.push({ title, price });
+      renderCart();
+      // quick small feedback
+      const btn = document.createElement('div');
+      btn.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-white text-black px-4 py-2 rounded-md shadow-md';
+      btn.textContent = 'Added to cart';
+      document.body.appendChild(btn);
+      setTimeout(()=> btn.remove(), 1300);
+    }
+
+    function renderCart(){
+      const container = document.getElementById('cartItems');
+      const totalEl = document.getElementById('cartTotal');
+      if(!container) return;
+      if(cart.length === 0){
+        container.innerHTML = '<div class="text-dim">Your cart is empty.</div>';
+        totalEl.textContent = '₹0';
+        return;
+      }
+      container.innerHTML = '';
+      let total = 0;
+      cart.forEach((it, idx) => {
+        total += it.price;
+        const el = document.createElement('div');
+        el.className = 'flex items-start justify-between gap-3 p-2 bg-black/50 rounded-md';
+        el.innerHTML = `
+          <div>
+            <div class="text-white text-sm">${it.title}</div>
+            <div class="text-dim text-xs">Qty: 1</div>
+          </div>
+          <div class="text-white">₹${it.price}</div>
+        `;
+        container.appendChild(el);
+      });
+      totalEl.textContent = '₹' + total;
+      // show cart
+      cartSidebar.classList.remove('translate-x-full');
+    }
+
+    function checkout(){
+      if(cart.length === 0){ alert('Add items to cart first.'); return; }
+      alert('Checkout demo — integrate payment gateway for production.');
+    }
+
+    // Quick view modal
+    const quickModal = document.getElementById('quickViewModal');
+    const qvTitle = document.getElementById('qvTitle');
+    const qvImg = document.getElementById('qvImg');
+    const qvPrice = document.getElementById('qvPrice');
+    const qvAdd = document.getElementById('qvAdd');
+    const closeQv = document.getElementById('closeQv');
+
+    function openQuickView(name){
+      // For demo, set some placeholders
+      qvTitle.textContent = name;
+      qvImg.src = "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=abd7e6f2b0d3e8c6";
+      qvPrice.textContent = '₹999';
+      quickModal.classList.remove('hidden');
+      quickModal.classList.add('flex');
+    }
+
+    function closeQuick(){
+      quickModal.classList.remove('flex');
+      quickModal.classList.add('hidden');
+    }
+
+    closeQv?.addEventListener('click', closeQuick);
+    quickModal?.addEventListener('click', (e) => {
+      if(e.target === quickModal) closeQuick();
+    });
+
+    qvAdd?.addEventListener('click', () => {
+      const name = qvTitle.textContent || 'Item';
+      const price = parseInt(qvPrice.textContent.replace('₹','')) || 999;
+      addToCart(name, price);
+      closeQuick();
+    });
+
+    // Product filtering (simple)
+    function filterProducts(cat){
+      const all = document.querySelectorAll('#productGrid > article');
+      all.forEach(a => {
+        const c = a.getAttribute('data-cat');
+        if(cat === 'all' || c === cat){
+          a.style.display = '';
+        } else {
+          a.style.display = 'none';
+        }
+      });
+    }
+
+    // set footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // contact form (demo)
+    document.getElementById('contactForm')?.addEventListener('submit', function(e){
+      e.preventDefault();
+      alert('Thanks — your message has been received. We will get back to you shortly.');
+      e.target.reset();
+    });
+
+    // feather icons
+    feather && feather.replace();
+
+  </script>
+
+  <!-- AOS init (again ensure it's ready) -->
+  <script> AOS.init(); </script>
+
+</body>
+</html>
